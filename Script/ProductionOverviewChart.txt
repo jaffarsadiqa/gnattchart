@@ -1,0 +1,98 @@
+﻿var ObjectDataTemp = {
+    "LocationLists": [
+        {"Location": {
+            "Id": 1, "Name": "Location 1",
+            "StateLists":
+                [
+                    { "State": { "Id": "s1", "Name": "ToBog", "StartTime": "08:00:00", "EndTime": "10:00:00" } },
+                    { "State": { "Id": "s2", "Name": "ToDrill", "StartTime": "10:30:00", "EndTime": "13:00:00" } },
+                    { "State": { "Id": "s3", "Name": "ToPrepare", "StartTime": "13:00:00", "EndTime": "15:00:00" } }
+                ]
+        }},
+        {"Location": {
+            "Id": 2, "Name": "Location 2",
+            "StateLists":
+                [
+                    { "State": { "Id": "s1", "Name": "ToBog", "StartTime": "09:00:00", "EndTime": "10:00:00" } },
+                    { "State": { "Id": "s2", "Name": "ToDrill", "StartTime": "10:00:00", "EndTime": "13:00:00" } },
+                    { "State": { "Id": "s3", "Name": "ToPrepare", "StartTime": "14:00:00", "EndTime": "15:00:00" } }
+                ]
+        }},
+    ],
+    "Shifts": [
+        { "Shift": { "Id": "1", "Name": "Morning", "StartTime": "08:00:00", "EndTime": "15:00:00" } },
+        { "Shift": { "Id": "1", "Name": "Morning", "StartTime": "15:00:00", "EndTime": "21:00:00" } },
+        { "Shift": { "Id": "1", "Name": "Morning", "StartTime": "21:00:00", "EndTime": "05:00:00" } }
+    ]
+}
+
+function SchedulerControl(schedulerControl) {
+    //Css styles for the grid    
+    this.styleRow = "height:100px;border:1px solid";
+    this.styleTable = "width:100%;border:0"
+    this.styleHeaderRow ="background-color:black;color:white;height:50px"
+    //Template Html
+    this.Control = null;
+    this.StartTime = "01 Jan 1900 08:00:00";//01 Jan 1900 13:00:00
+    this.EndTime = "01 Jan 1900 15:00:00";//01 Jan 1900 19:00:00
+    this.NoOfColumn = 0;
+    this.NoOfLocationRow = 0;
+    this.Data = null;
+    m_scheduler = this;
+    this.Initialize = function (dataToBind) {
+        m_scheduler.Control = document.getElementById(schedulerControl);
+        m_scheduler.Data = dataToBind;
+        SetControlProperty();
+    }
+    function SetControlProperty()
+    {
+        m_scheduler.NoOfLocationRow = m_scheduler.Data.LocationLists.length;
+        diff = new Date(m_scheduler.EndTime) - new Date(m_scheduler.StartTime);
+        diff = diff / 1000 / 60 / 60;
+        m_scheduler.NoOfColumn = diff % 1 > 0 ? diff + 1 : diff;
+        GenerateUI();
+    }
+    function GenerateUI() {
+        //Generate Header for the Container
+        var TableObject = document.createElement("table");
+        TableObject.setAttribute("style", m_scheduler.styleTable);
+        var TrHeader = document.createElement("tr");
+        TableObject.appendChild(TrHeader);
+
+        var tdHeaderCell = document.createElement("td");
+        tdHeaderCell.innerHTML = "&nbsp;"
+        tdHeaderCell.setAttribute("style", "width:100px");
+        TrHeader.appendChild(tdHeaderCell);
+        TrHeader.setAttribute("style", m_scheduler.styleHeaderRow);
+        //Header columns
+        var time = new Date(m_scheduler.StartTime);
+        for (j = 0; j < m_scheduler.NoOfColumn; j++) {
+            var td = document.createElement("td");
+            TrHeader.appendChild(td);
+            var tmpTime =time.getHours() + j;
+            tmpTime = tmpTime.toString().length<=1?"0"+tmpTime : tmpTime
+            td.innerHTML = tmpTime;
+        }        
+
+        for (i = 0; i < m_scheduler.NoOfLocationRow; i++) {
+            var tr = document.createElement("tr");
+            tr.setAttribute("style", m_scheduler.styleRow);
+            var tdHeader = document.createElement("td");
+            tr.appendChild(tdHeader);
+            tdHeader.innerHTML = m_scheduler.Data.LocationLists[i].Location.Name;
+
+            var td = document.createElement("td");
+            tr.appendChild(td);
+            td.setAttribute("colspan", m_scheduler.NoOfColumn);
+            td.innerHTML = "&nbsp";
+            for (j = 0; j < m_scheduler.NoOfColumn; j++) {                
+                
+            }
+            TableObject.appendChild(tr);
+        }
+
+        m_scheduler.Control.appendChild(TableObject);
+
+    }
+}
+

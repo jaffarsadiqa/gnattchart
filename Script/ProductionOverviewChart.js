@@ -5,14 +5,14 @@
             "StateLists":
                 [
                     { "State": { "Id": "s1", "Name": "ToBog", "StartTime": "08:00:00", "EndTime": "10:00:00", "color":"blue" } },
-                    { "State": { "Id": "s2", "Name": "ToDrill", "StartTime": "10:30:00", "EndTime": "13:00:00", "color": "pink"} },
+                    { "State": { "Id": "s2", "Name": "ToDrill", "StartTime": "10:00:00", "EndTime": "13:00:00", "color": "pink"} },
                     { "State": { "Id": "s3", "Name": "ToPrepare", "StartTime": "13:00:00", "EndTime": "15:00:00", "color": "red"} }
                 ],
-            "ActionLists":
+            "ActivityLists":
                 [
-                    { "Action": { "Id": "s1", "Name": "ToBog-Action", "StartTime": "08:00:00", "EndTime": "09:00:00", "color": "blue" } },
-                    { "Action": { "Id": "s2", "Name": "ToDrill-Action", "StartTime": "10:30:00", "EndTime": "12:00:00", "color": "pink" } },
-                    { "Action": { "Id": "s3", "Name": "ToPrepare-Action", "StartTime": "13:00:00", "EndTime": "15:00:00", "color": "red" } }
+                    { "Activity": { "Id": "s1", "Name": "ToBog-Activity", "StartTime": "08:00:00", "EndTime": "09:00:00", "color": "blue" } },
+                    { "Activity": { "Id": "s2", "Name": "ToDrill-Activity", "StartTime": "10:30:00", "EndTime": "12:00:00", "color": "pink" } },
+                    { "Activity": { "Id": "s3", "Name": "ToPrepare-Activity", "StartTime": "13:00:00", "EndTime": "15:00:00", "color": "red" } }
                 ]
         }},
         {"Location": {
@@ -23,11 +23,11 @@
                     { "State": { "Id": "s2", "Name": "ToDrill", "StartTime": "10:00:00", "EndTime": "13:00:00", "color": "pink" } },
                     { "State": { "Id": "s3", "Name": "ToPrepare", "StartTime": "13:00:00", "EndTime": "15:00:00", "color": "red" } }
                 ],
-            "ActionLists":
+            "ActivityLists":
                 [
-                    { "Action": { "Id": "s1", "Name": "ToBog-Action", "StartTime": "09:00:00", "EndTime": "10:00:00", "color": "blue" } },
-                    { "Action": { "Id": "s2", "Name": "ToDrill-Action", "StartTime": "10:30:00", "EndTime": "13:00:00", "color": "pink" } },
-                    { "Action": { "Id": "s3", "Name": "ToPrepare-Action", "StartTime": "14:00:00", "EndTime": "15:00:00", "color": "red" } }
+                    { "Activity": { "Id": "s1", "Name": "ToBog-Activity", "StartTime": "09:00:00", "EndTime": "10:00:00", "color": "blue" } },
+                    { "Activity": { "Id": "s2", "Name": "ToDrill-Activity", "StartTime": "10:30:00", "EndTime": "13:00:00", "color": "pink" } },
+                    { "Activity": { "Id": "s3", "Name": "ToPrepare-Activity", "StartTime": "14:00:00", "EndTime": "15:00:00", "color": "red" } }
                 ]
         }},
     ],
@@ -35,7 +35,8 @@
         { "Shift": { "Id": "1", "Name": "Morning", "StartTime": "08:00:00", "EndTime": "15:00:00" } },
         { "Shift": { "Id": "1", "Name": "Morning", "StartTime": "15:00:00", "EndTime": "21:00:00" } },
         { "Shift": { "Id": "1", "Name": "Morning", "StartTime": "21:00:00", "EndTime": "05:00:00" } }
-    ]
+    ],
+    "Blast": { "StartTime": "16:00:00", "EndTime": "18:00:00" }
 }
 
 function SchedulerControl(schedulerControl, startTime, endTime) {
@@ -43,8 +44,8 @@ function SchedulerControl(schedulerControl, startTime, endTime) {
     m_scheduler = this;
     LocationList = [];
     maxStateHeight = 25;
-    maxActionHeight = 50;
-    topActionPos = maxStateHeight + 1;
+    maxActivityHeight = 50;
+    topActivityPos = maxStateHeight + 1;
     imgTimeLine = "data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTguMS4xLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4PSIwcHgiIHk9IjBweCIgdmlld0JveD0iMCAwIDEyNS4zMDQgMTI1LjMwNCIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgMTI1LjMwNCAxMjUuMzA0OyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIgd2lkdGg9IjMycHgiIGhlaWdodD0iMzJweCI+CjxnPgoJPGc+CgkJPHBvbHlnb24gcG9pbnRzPSI2Mi42NTIsMTAzLjg5NSAwLDIxLjQwOSAxMjUuMzA0LDIxLjQwOSAgICIgZmlsbD0iI0Q4MDAyNyIvPgoJPC9nPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+Cjwvc3ZnPgo=";
     timeImgObject = null;
     //Css styles for the grid
@@ -55,8 +56,9 @@ function SchedulerControl(schedulerControl, startTime, endTime) {
     this.styleHeaderRow = "background-color:gray;color:white;height:50px;"
     this.styleLocationItem = "border-radius:10px;border: 2px solid white;color:white;font-weight:bold;font-size:16px;height:98px;background-color:#35cbd8;display: flex;justify-content: center;align-items: center;";
     this.styleStateItem = "border-radius:5px;border: 2px solid white;color:white;font-weight:bold;font-size:14px;height:100%";
-    this.styleActionItem = "border: 2px solid white;color:white;font-weight:bold;font-size:14px;";
+    this.styleActivityItem = "border: 2px solid white;color:white;font-weight:bold;font-size:14px;";
     this.styleEquipItem = "color:black;font-weight:bold;font-size:12px;height:100%";
+    this.styleBlastItem = "position:relative;background-color:red;";
     //Template Html
     this.Control = null;
     this.StartTime = new Date(startTime);//01 Jan 1900 13:00:00
@@ -98,13 +100,39 @@ function SchedulerControl(schedulerControl, startTime, endTime) {
             setTimeout(MoveTimer, 1000 * 60);
         } catch (e) {}
     }
-    function GenerateUI() {
+    function GenerateUI() {        
+        
         //Generate Header for the Container
         var TableObject = document.createElement("table");
         TableObject.setAttribute("style", m_scheduler.styleTable);
         TableObject.setAttribute("cellspacing", 0);
         TableObject.setAttribute("cellpadding", 0);
 
+        //Generate Top Containe for Reset and Blast Control
+        var trTopContainer = document.createElement("tr");
+        var tdLeft = document.createElement("td");
+        tdLeft.setAttribute("style", "border:1px solid white");
+        tdLeft.innerHTML = "&nbsp;"
+        var tdRight = document.createElement("td");
+        tdRight.setAttribute("colspan", m_scheduler.NoOfColumn);
+        tdRight.setAttribute("style", "")
+
+        //set blast and reset control
+        var blastStDate = new Date("1 jan 1900 " + m_scheduler.Data.Blast.StartTime);
+        var blastEdDate = new Date("1 jan 1900 " + m_scheduler.Data.Blast.EndTime);
+        var diffBlast = ConvertMsToMins(blastEdDate - blastStDate) / 60;
+        var widPercentage = (diffBlast * 100) / m_scheduler.MaxTimeLine;        
+        var leftPosBlast = getLeftPos(blastStDate);
+
+        var blastControl = document.createElement("div");
+        blastControl.setAttribute("style", m_scheduler.styleBlastItem + ";width:" + widPercentage + "%;left:" + leftPosBlast + "%");
+        blastControl.innerHTML = "Blast";
+        tdRight.appendChild(blastControl);
+
+        
+        trTopContainer.appendChild(tdLeft);
+        trTopContainer.appendChild(tdRight);
+        TableObject.appendChild(trTopContainer);
 
         var trHeaderTimeLine = document.createElement("tr");
         var td1 = document.createElement("td");
@@ -121,7 +149,7 @@ function SchedulerControl(schedulerControl, startTime, endTime) {
         img.setAttribute("style", "width:25px;height:25px;position:relative;left:" + leftPosition+"%");
         td2.appendChild(img);
 
-        //MoveTimer();
+        MoveTimer();
         
         trHeaderTimeLine.appendChild(td1);
         trHeaderTimeLine.appendChild(td2);
@@ -168,7 +196,7 @@ function SchedulerControl(schedulerControl, startTime, endTime) {
             //set location to kay value pair
             LocationList[key] = value;
             generateUiForStates(value.Location.StateLists, value.Location, td);
-            generateUiForAction(value.Location.ActionLists, value.Location, td)
+            generateUiForActivity(value.Location.ActivityLists, value.Location, td)
 
         }
 
@@ -201,31 +229,31 @@ function SchedulerControl(schedulerControl, startTime, endTime) {
             LocationTrElement.appendChild(stateElement);
         }
     }
-    function generateUiForAction(actionList, LocationObject, LocationTrElement) {
-        for (k = 0; k < actionList.length; k++) {
-            var actionItem = actionList[k].Action;
-            var actionElement = document.createElement("div");
-            actionElement.setAttribute("id", LocationObject.Id + "_" + actionItem.Id + "_Action");
+    function generateUiForActivity(ActivityList, LocationObject, LocationTrElement) {
+        for (k = 0; k < ActivityList.length; k++) {
+            var ActivityItem = ActivityList[k].Activity;
+            var ActivityElement = document.createElement("div");
+            ActivityElement.setAttribute("id", LocationObject.Id + "_" + ActivityItem.Id + "_Activity");
             //stateElement.setAttribute("style", m_scheduler.styleStateItem);
 
             //Assign Width based on the time
-            var actionStTime = new Date("1 jan 1900 " + actionItem.StartTime);
-            var actionEdTime = new Date("1 jan 1900 " + actionItem.EndTime);
+            var ActivityStTime = new Date("1 jan 1900 " + ActivityItem.StartTime);
+            var ActivityEdTime = new Date("1 jan 1900 " + ActivityItem.EndTime);
 
-            var diff = ConvertMsToMins(actionEdTime - actionStTime) / 60;
+            var diff = ConvertMsToMins(ActivityEdTime - ActivityStTime) / 60;
             var wInPercentage = (diff * 100) / m_scheduler.MaxTimeLine;
 
-            var leftPosition = (ConvertMsToMins(actionStTime - m_scheduler.StartTime) / 60);
+            var leftPosition = (ConvertMsToMins(ActivityStTime - m_scheduler.StartTime) / 60);
             leftPosition = ((leftPosition * 100) / m_scheduler.MaxTimeLine);
-            var addStyle = "position:absolute;width:" + wInPercentage + "%;left:" + leftPosition + "%;" + "height:" + maxActionHeight + "px;" + "top:" + topActionPos;
-            actionElement.setAttribute("style", addStyle);
+            var addStyle = "position:absolute;width:" + wInPercentage + "%;left:" + leftPosition + "%;" + "height:" + maxActivityHeight + "px;" + "top:" + topActivityPos;
+            ActivityElement.setAttribute("style", addStyle);
 
             //stateElement.setAttribute("style", m_scheduler.styleStateItem + addStyle);
 
-            actionElement.innerHTML = "<div style='" + m_scheduler.styleActionItem + ";background-color:orange'>" + actionItem.Name + "</div>"+
+            ActivityElement.innerHTML = "<div style='" + m_scheduler.styleActivityItem + ";background-color:orange'>" + ActivityItem.Name + "</div>"+
                 "<div style = '" + m_scheduler.styleEquipItem + ";background-color:yellow'>Equipment Details</div>";
 
-            LocationTrElement.appendChild(actionElement);
+            LocationTrElement.appendChild(ActivityElement);
         }
     }
 }

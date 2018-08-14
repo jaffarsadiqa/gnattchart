@@ -86,13 +86,13 @@ function SchedulerControl(schedulerControl, startTime, endTime) {
         GenerateUI();
     }
     function getLeftPos(currDateTime) {
-        var leftPosition = (ConvertMsToMins(currDateTime - m_scheduler.StartTime) / 60)+1;
+        var leftPosition = (ConvertMsToMins(currDateTime - m_scheduler.StartTime) / 60);
         leftPosition = ((leftPosition * 100) / m_scheduler.MaxTimeLine);
         return leftPosition;
     }
     function MoveTimer() {
         try {
-            var currTime = new Date().getHours() + (100 * (new Date().getMinutes()) / 60)
+            var currTime = new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getMilliseconds();
             var currDateTime = new Date("1 jan 1900 " + currTime);
             timeImgObject.setAttribute("style", "width:25px;height:25px;position:relative;left:" + getLeftPos(currDateTime) + "%");
             setTimeout(MoveTimer, 1000 * 60);
@@ -110,9 +110,9 @@ function SchedulerControl(schedulerControl, startTime, endTime) {
         var td1 = document.createElement("td");
         td1.setAttribute("style", "border:1px solid white");
         var td2 = document.createElement("td");
-        td1.setAttribute("colspan", m_scheduler.NoOfColumn);
+        td2.setAttribute("colspan", m_scheduler.NoOfColumn);
 
-        var currTime = new Date().getHours() + (100*(new Date().getMinutes())/60)
+        var currTime = new Date().getHours() + ":" + new Date().getMinutes() + ":" + new Date().getMilliseconds();
         var currDateTime = new Date("1 jan 1900 " + currTime);
         var leftPosition = getLeftPos(currDateTime);
         var img = document.createElement("img");
@@ -121,7 +121,7 @@ function SchedulerControl(schedulerControl, startTime, endTime) {
         img.setAttribute("style", "width:25px;height:25px;position:relative;left:" + leftPosition+"%");
         td2.appendChild(img);
 
-        MoveTimer();
+        //MoveTimer();
         
         trHeaderTimeLine.appendChild(td1);
         trHeaderTimeLine.appendChild(td2);

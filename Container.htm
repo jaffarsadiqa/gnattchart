@@ -1,0 +1,19 @@
+﻿<html>
+<head>
+    <title></title>
+	<meta charset="utf-8" />
+    <script src="Script/ProductionOverviewChart.js"></script>
+    <script>        
+        var Scheduler = new SchedulerControl("ContainerReport", "01 Jan 1900 08:00:00", "01 Jan 1900 17:00:00");
+        function InitializeScheduler()
+        {               
+            Scheduler.Initialize(ObjectDataTemp);
+        }
+    </script>
+</head>
+<body onload="InitializeScheduler()">
+    <div id="ContainerReport" width="100%">
+
+    </div>
+</body>
+</html>
